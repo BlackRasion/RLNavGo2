@@ -52,7 +52,6 @@ class SensorManager:
                 frequency=freq, # 相机采样频率
                 resolution=(640, 480), # 相机分辨率
                 orientation=rot_utils.euler_angles_to_quats(np.array([0, 0, 0]), degrees=True), # 相机朝向
-                focal_length=1.5, # 相机焦距
             )
             camera.initialize()
             camera.set_focal_length(1.5)
