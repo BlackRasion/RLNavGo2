@@ -30,9 +30,14 @@ camera_follow: True
 # env_name: warehouse-shelves # 带货架的仓库环境
 # env_name: warehouse-forklifts # 带叉车的仓库环境
 # env_name: full-warehouse # 完整仓库环境（包含所有元素）
-# env_name: obstacle-sparse # 稀疏障碍物场地
-# env_name: obstacle-medium # 中等密度障碍物场地
-env_name: obstacle-dense # 密集障碍物场地
+# env_name: obstacle-sparse # 稀疏障碍物场地（仅静态）
+# env_name: obstacle-medium # 中等密度障碍物场地（仅静态）
+# env_name: obstacle-dense # 密集障碍物场地（仅静态）
+# env_name: dyn-obstacle-sparse # 稀疏动态障碍物场地（静态+动态）
+# env_name: dyn-obstacle-medium # 中等密度动态障碍物场地（静态+动态）
+env_name: dyn-obstacle-dense # 密集动态障碍物场地（静态+动态）
+
+
 
 # =============================================================================
 # 传感器配置

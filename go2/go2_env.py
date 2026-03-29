@@ -298,7 +298,7 @@ def camera_follow(env):
         yaw_rotation = R.from_euler('z', yaw).as_matrix()
         
         # 设置相机位置：相对于机器人的位置，考虑机器人朝向
-        camera_position = yaw_rotation.dot(np.asarray([-4.0, 0.0, 5.0])) + robot_position
+        camera_position = yaw_rotation.dot(np.asarray([-5.0, 0.0, 8.0])) + robot_position
         
         # 更新相机视图
         set_camera_view(camera_position, robot_position)

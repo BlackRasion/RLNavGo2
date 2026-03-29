@@ -101,12 +101,27 @@ def run_simulator(cfg):
 
     # ==================== 仿真环境创建 ====================
     # 根据配置选择并创建仿真环境
+    
+    # 检测设备类型
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    
+    # 静态障碍物环境
     if cfg.env_name == "obstacle-dense":
         sim_env.create_obstacle_dense_env()  # 密集障碍物环境
     elif cfg.env_name == "obstacle-medium":
         sim_env.create_obstacle_medium_env()  # 中等密度障碍物环境
     elif cfg.env_name == "obstacle-sparse":
         sim_env.create_obstacle_sparse_env()  # 稀疏障碍物环境
+    
+    # 动态障碍物环境（同时包含静态和动态障碍物）
+    elif cfg.env_name == "dyn-obstacle-sparse":
+        sim_env.create_dyn_obstacle_sparse_env(device=device, dt=go2_env_cfg.sim.dt)
+    elif cfg.env_name == "dyn-obstacle-medium":
+        sim_env.create_dyn_obstacle_medium_env(device=device, dt=go2_env_cfg.sim.dt)
+    elif cfg.env_name == "dyn-obstacle-dense":
+        sim_env.create_dyn_obstacle_dense_env(device=device, dt=go2_env_cfg.sim.dt)
+    
+    # USD 场景环境
     elif cfg.env_name == "warehouse":
         sim_env.create_warehouse_env()  # 简单仓库环境
     elif cfg.env_name == "warehouse-forklifts":
@@ -115,6 +130,10 @@ def run_simulator(cfg):
         sim_env.create_warehouse_shelves_env()  # 带货架的仓库环境
     elif cfg.env_name == "full-warehouse":
         sim_env.create_full_warehouse_env()  # 完整仓库环境
+    else:
+        raise ValueError(f"不支持的环境名称: {cfg.env_name}")
+
+
 
     # ==================== 传感器设置 ====================
     # 创建传感器管理器实例
@@ -174,6 +193,10 @@ def run_simulator(cfg):
             # 应用动作到机器人，更新物理状态
             # 返回：新的观测、奖励、终止标志、信息
             obs, _, _, _ = env.step(actions)
+
+            # ==================== 动态障碍物更新 ====================
+            # 如果启用了动态障碍物环境，更新障碍物位置
+            sim_env.update_dynamic_obstacles()
 
             # ==================== ROS2 数据发布 ====================
             # 发布传感器数据到 ROS2 话题
